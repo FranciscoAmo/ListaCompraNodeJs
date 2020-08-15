@@ -1,0 +1,21 @@
+{
+  "name": "servidor-prueba2",
+  "version": "1.0.0",
+  "description": "servidor rest de la lista de la compra",
+  "main": "index.js",
+  "dependencies": {
+    "body-parser": "^1.5.1",
+    "express": "~4.7.1",
+    "method-override": "^2.1.2",
+    "mongoose": "^5.10.0",
+    "mongoose-unique-validator": "^1.0.3"
+  },
+  "scripts": {
+    "start": "nodemon index.js"
+  },
+  "author": "Francisco Amo",
+  "license": "MIT",
+  "devDependencies": {
+    "nodemon": "^2.0.4"
+  }
+}
