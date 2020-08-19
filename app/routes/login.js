@@ -1,0 +1,24 @@
+// librerias necesarias
+const express = require('express'); 
+// importamos el controlador
+
+const UserController = require('../controllers/UserController');
+
+// importamos el middleware de autorizacion
+const auth = require('../middlewares/auth')
+
+// instanciamos el router de express
+const Router = express.Router();
+
+
+// rutas
+Router.get('/',UserController.signUp)                                                          // localhost:3000/product/
+        .post('/signup',UserController.signUp)     
+        .post('/signin',UserController.singIn)  
+        .get('/private',auth.isAuth,(req,res)=>{
+                res.status(200).send({ message: 'tienes permisos'})
+        })
+                                             // localhost:3000/product/
+       
+
+module.exports = Router;

@@ -41,7 +41,7 @@ function create(req,res){
    if(!req.body.name || !req.body.tipo) return res.status(500).send({message:'debe introducir un nombre o tipo'})    // si no tiene el nombre o el tipo relenado no dejo guardar en la base de datos
    console.log({product})   
    return product.save().then(product => res.status(201).send({mensage:"Creado",product}))  // lo guardo en la base de datos
-   .catch(error => res.status(500).send({message:'error al introducir a la base de datos',error}));                      // si da fallo mando un mensage no discrimina err  tipo y duplicado de entrada 
+   .catch(error => res.status(500).send(error));                      // si da fallo mando un mensage no discrimina err  tipo y duplicado de entrada 
 }
 
 

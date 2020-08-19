@@ -10,7 +10,7 @@ const ProductSchema = new mongoose.Schema({
         type:String,
          createIndexes :true,
             unique:true,
-            required:true},
+            required:[true,'campo nombre es necesario']},
     tipo: {
         type:String,
         required:true,
@@ -23,9 +23,9 @@ const ProductSchema = new mongoose.Schema({
 
 
 });
-ProductSchema.plugin(uniquevalidator);
+ProductSchema.plugin(uniquevalidator,{message:'El producto ya existe en la base de datos modifica el precio si es lo que deseas'});
 
-// convertimos el Schema en modelo
+// convertimos el Schema en modelo parametros: 1 Nombre del modelo(Para referenciarlo),2 Esquema del modelo,3 collecion de la base de datos en la que consultamos
 
-const Product = mongoose.model('producto',ProductSchema);
+const Product = mongoose.model('producto',ProductSchema,'products');
 module.exports = Product;
