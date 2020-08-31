@@ -16,8 +16,7 @@ Router.get('/',isAuth,ListController.findAllList,ListController.showList)       
        .put('/:email',isAuth,ListController.findList,ListController.findUser,ListController.addUser)                        // añado un usuario a la lista
        .put('/',isAuth,ListController.findList,ListController.remove)                                            // elimina una lista del usuario 
        .put('/:key/:value/remove',isAuth,ListController.findList,ListController.findProduct,ListController.removeProduct)                                                                             // elimino una lista
-        //.get('/private',auth.isAuth,(req,res)=>{ res.status(200).send({ message: 'tienes permisos'}) })
-                                             // localhost:3000/product/
+       
 
 
 module.exports = Router;

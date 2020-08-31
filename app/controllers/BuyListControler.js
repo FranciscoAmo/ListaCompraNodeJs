@@ -12,7 +12,7 @@ const mongoose= require('mongoose')
 // constantes para los subdocumentos
 const populateUser = {path: 'associatedUsers', select: 'email displayName'}     // usados en populate
 
-const populateProduct = {path: 'products', select: 'name'}  // usados en populate
+const populateProduct = {path: 'products.product',select: 'name'}  // usados en populate
 
 
 
@@ -34,11 +34,10 @@ function createList(req,res){
     .catch(error => res.status(500).send(error));                      // si da fallo mando un mensage no discrimina err  tipo y duplicado de entrada 
  }
 
-// funcion intermedia que identifica si existen varios usuarios o ya solo queda el usuario principal
-function checkUsersList(req,res){
+
   
 
-}
+
 
 
 
@@ -47,6 +46,7 @@ function checkUsersList(req,res){
 // elimino la lista porque ya no quedan usuarios registrados
 
 function remove(req,res){
+    if(req.body.list==0){
     let list= req.body.list[0]
    
     if(req.body.err) return res.status(500).send({err});                 // si se porduce un error para
@@ -54,12 +54,15 @@ function remove(req,res){
   
     if(list.associatedUsers.length>1)   return  removeUser(req,res,list)
 
-/*
+
      return req.body.list[0].remove()                                                                   // si no hay mas usuarios borro la lista completamente
                                  .then(list=> res.status(200).send({ message: 'Lista borrada',list})) // si existe lo borro  y muestro el registro borrado
                                  .catch(error => res.status(500).send({message:'Se ha producido un error'})) // capturando un error
-                                 */
- }
+                                
+     }else{
+       return res.status(400).send({message:'No hay listas que eliminar'}) 
+    }
+    }
 
 
 
@@ -253,11 +256,12 @@ function removeProduct(req, res) {
         let nombrelista=list[0].nameList
 
         // busco la lista y actualizo añadiendo un producto 
-        List.updateOne({ associatedUsers: req.user.sub ,
+        List.updateMany({ associatedUsers: req.user.sub ,
                        nameList:nombrelista}, 
             {$pull: 
-                {products:
-            { $in: [ productId ] }}},
+                {products:{
+                    product:
+            { $in: [productId]  }}}},
             // propiedades 
            {new : true, upsert: true},
             
@@ -293,51 +297,59 @@ function addProduct(req, res) {
     let product= req.body.product
     let productId=product[0]._id
     let list=req.body.list
-   
-  /*  console.log(list)
+    let quantity=req.body.quantity;
+    
+  
+  /*  
+  console.log(list)
     console.log(list[0].name)
-    console.log(product)
+     console.log(product)
     console.log(product[0]._id)
     console.log(req.user.sub)
     */
 
     // compruebo que existe el id de usuario y que se ha encontrado la lista
-    if (req.user.sub && list) {         
+    if (req.user.sub && list) {  
+       // let productos=list.products.product
+        
         // si encuentro la lista cogo el nombre de la lista
         let nombrelista=list[0].nameList
 
-        // busco la lista y actualizo añadiendo un producto 
+        // busco la lista y actualizo añadiendo un producto si el producto esta repetido no lo introduce pero no avisa
         List.findOneAndUpdate({ associatedUsers: req.user.sub ,
-                       nameList:nombrelista}, 
+                       nameList:nombrelista,'products.product': { $ne: [productId] }},
+                          
             {$push: 
                 {'products':
-            {_id: productId}}},
+            {product: productId , quantity:quantity}}},
+          
             // propiedades 
            {new:true,      
          useFindAndModify:true},
-            
-           (error) => {
-                if (error) {
-                    return res.json({
-                        success: false,
-                        msj: 'No se pudo agregar el producto',
-                        err: {error}
-                        
-                    });
-                } else {
-                    return res.json({
-                        success: true,
-                        msj: 'Se agregó correctamente el producto'
-                    });
-                }
-            }
-        )
+          
+        ).exec(  
+            (error) => {
+                 if (error) {
+                     return res.json({
+                         success: false,
+                         msj: 'No se pudo agregar el producto',
+                         err: {error}
+                         
+                     });
+                 } else {
+                     return res.json({
+                         success: true,
+                         msj: 'Se agregó correctamente el producto'
+                     });
+                 }
+             })
     } else {
         return res.json({
             success: false,
             msj: 'No se pudo agregar el producto, por favor verifique que el _id sea correcto'
         });
     }
+
 };
 
 

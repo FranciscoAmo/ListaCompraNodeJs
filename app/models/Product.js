@@ -8,17 +8,24 @@ const ProductSchema = new mongoose.Schema({
    
     name: {
         type:String,
-         createIndexes :true,
+         createIndexes :true,         
             unique:true,
             required:[true,'campo nombre es necesario']},
     tipo: {
         type:String,
         required:true,
         enum:[
-            'verdura','legumbre','fruta'
+            'verdura','legumbre','fruta','lacteo','carne','pescado','helado','limpieza','higiene','detergente','aperitivo','condimento','bebida'
         ]
         },
     precio: Number,
+    med:{
+        
+        type:String,
+        enum:[
+            'kilos','unidad','litros'
+        ]
+    }
    
 
 
