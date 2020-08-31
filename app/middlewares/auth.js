@@ -17,14 +17,16 @@ function isAuth (req,res, next){
 const token = req.headers.authorization.split(' ')[1]        // la primera parte del array es Beared la segunda el token
 
 // llamo a decodificar token del servicio
-services.decodeToken(token).then(response=>{
+services.decodeToken(token).then((response)=>{
     // si va bien  envia la respuesta del servicio( resolve(payload.sub))
+   // console.log(response)
     req.user= response
-    next()
+    //console.log(response)
+    next();
 
 })
     .catch(response => {
-        res.status(res.status(403).send({ message: 'No tienes autorizacion'}))
+        res.status(res.status(403).send({ message: 'No tienes autorizacion '}))
     })
 }
 

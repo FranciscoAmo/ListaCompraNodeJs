@@ -2,15 +2,15 @@
 
 // lista de librerias
 const mongoose = require('mongoose')
-const User = require('./user')
+const User = require('./user');
+const Product = require('./Product');
 const Schema = mongoose.Schema
 
 // creamos el esquema
 const ListaSchema = new Schema({
-    name:{ type:String, required:[true,'debe indicar un nombre a la lista']},
-    mainUser: {type: Schema.Types.ObjectId, ref: "users", required: true},
-    associatedUsers:{type: Schema.Types.ObjectId, ref: "users"},
-    product:{type: Schema.Types.ObjectId, ref: "products"},
+    nameList:{ type:String, required:[true,'debe indicar un nombre a la lista']}, 
+    associatedUsers:[{type: Schema.Types.ObjectId, ref: "user", required: true}],   // array de usuarios
+    products:[{type: Schema.Types.ObjectId, ref: "product"}],                                             // array de productos de la lista
     createdDate:{ type: Date, default: Date.now()} ,// fecha del registro
    
 
@@ -18,7 +18,7 @@ const ListaSchema = new Schema({
 
 
 // creamos el model
-const List = mongoose.model('lista',ProductSchema,'listas');
+const List = mongoose.model('lista',ListaSchema);
 
 // exportamos el modelo
 module.exports=List;

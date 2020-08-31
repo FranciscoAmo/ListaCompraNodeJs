@@ -13,10 +13,11 @@ const config= require('../config/config')
 
 // funcion creada
 function createToken(user){
-    //payload datos qeu viajan entra el cliente y el servidor
+     //payload datos qeu viajan entra el cliente y el servidor
     const payload ={
         // id del usuario(recomendado no usar el id de mongo)
-        sub: user._id,
+        name:user[0].email,
+        sub: user[0]._id,
         iat: moment().unix(),                   // momento en el que se creo el token
         exp:moment().add(14,'days').unix(),                   // momento qen que expira el token
     }
@@ -43,7 +44,8 @@ function decodeToken(token){
                 })
             }
             // si todo va bien
-            resolve(payload.sub)
+           
+            resolve(payload)
             
 
         }catch(err){

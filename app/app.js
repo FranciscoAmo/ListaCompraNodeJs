@@ -8,6 +8,7 @@ const App = express();  // variable express
 // importo el fichero de las rutas
 const Product = require('./routes/product')
 const Login = require('./routes/login')
+const List = require('./routes/list')
 
 
 
@@ -20,5 +21,6 @@ App.use(bodyParser.json());         // permite enviar peticiones y manerar en fo
 // direccion raiz debe ser lo ultimo en declarar del router
 App.use('/product',Product); // ruta de los producto
 App.use('/login',Login);      // ruta del registro  
+App.use('/lista',List);         // ruta de Listas
 
 module.exports = App;

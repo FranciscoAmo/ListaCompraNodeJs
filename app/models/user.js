@@ -5,12 +5,13 @@ const Schema = mongoose.Schema
 const bcrypt = require('bcrypt-nodejs') // libreria para encriptar la contraseña
 const crypto = require('crypto') // libreria para encriptar el avatar de la pagina
 
+
 // creamos el esquema
 const UserSchema = new Schema({
     email:{type:String , unique:[true, 'el email debe ser distinto'], lowercase:true},
-    displayName:String,
+    displayName:{type :String,requided:[true,'necesitas un nombre de usuario']},
     avatar:String,
-    password:{ tupe : String ,select:false},  // select false hace que al hacer un get de ususariaos no nos devuleva la contraseñar 
+    password:{ type : String ,select:false, required:true},  // select false hace que al hacer un get de ususariaos no nos devuleva la contraseñar 
     signupDate:{ type: Date, default: Date.now()} ,// fecha del registro
     lastLogin: Date
 })
@@ -20,7 +21,7 @@ const UserSchema = new Schema({
 // esta funcion encripta los datos antes de introducirlo en la base de datos
  UserSchema.pre('save',(next)=>{
       let user= this
-
+  
         bcrypt.genSalt(10,(err,salt)=>{
             if(err) return next();  // 
             // si hay que encriptarlo lo encripto
@@ -44,7 +45,7 @@ const UserSchema = new Schema({
  }
 
  // creamos el model
- const User = mongoose.model('user',UserSchema,'users');
+ const User = mongoose.model('user',UserSchema);
 
  // exportamos el modelo
  module.exports=User;
