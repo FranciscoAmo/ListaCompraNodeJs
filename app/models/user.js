@@ -11,7 +11,7 @@ const UserSchema = new Schema({
     email:{type:String , unique:[true, 'el email debe ser distinto'], lowercase:true},
     displayName:{type :String,requided:[true,'necesitas un nombre de usuario']},
     avatar:String,
-    password:{ type : String ,select:false, required:true},  // select false hace que al hacer un get de ususariaos no nos devuleva la contraseñar 
+    password:{ type : String , required:true},  // select false hace que al hacer un get de ususariaos no nos devuleva la contraseñar 
     signupDate:{ type: Date, default: Date.now()} ,// fecha del registro
     lastLogin: Date
 })
@@ -19,19 +19,20 @@ const UserSchema = new Schema({
 // funciones que se realizan antes de introducir en la base de datos
 
 // esta funcion encripta los datos antes de introducirlo en la base de datos
- UserSchema.pre('save',(next)=>{
-      let user= this
+ UserSchema.pre('save',function(next){
+        let user =this
   
         bcrypt.genSalt(10,(err,salt)=>{
-            if(err) return next();  // 
+            if(err) return next(err);  // 
             // si hay que encriptarlo lo encripto
-            bcrypt.hash(this.password,salt,null,(err,hash)=>{
-                if(err) return next(err)        // si da error continuo con el programa y paso el error
+            bcrypt.hash(user.password,salt,null,function(error,hash){
+                if(err) {return next(error)        // si da error continuo con el programa y paso el error
 
                 // si todo va bien se cambia el valor del password por el del hash
-                user.password =hash
+                }else{user.password =hash
+                console.log(user.password)
                 next()      // continuo al siguiente middleware
-
+                }
             })
         })
  })

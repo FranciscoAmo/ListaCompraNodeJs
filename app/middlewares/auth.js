@@ -26,7 +26,7 @@ services.decodeToken(token).then((response)=>{
 
 })
     .catch(response => {
-        res.status(res.status(403).send({ message: 'No tienes autorizacion '}))
+        res.status(res.status(403).send({ message: 'tiempo expirado vulevete a loggear '}))
     })
 }
 

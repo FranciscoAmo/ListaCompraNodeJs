@@ -16,8 +16,8 @@ function createToken(user){
      //payload datos qeu viajan entra el cliente y el servidor
     const payload ={
         // id del usuario(recomendado no usar el id de mongo)
-        name:user[0].email,
-        sub: user[0]._id,
+        name:user.email,
+        sub: user._id,
         iat: moment().unix(),                   // momento en el que se creo el token
         exp:moment().add(14,'days').unix(),                   // momento qen que expira el token
     }
