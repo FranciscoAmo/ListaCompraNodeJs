@@ -16,7 +16,13 @@ const option={
 }
 
 
-
+App.listen(CONFIG.PORT,function(err){
+    if(err){
+       return console.log(err);
+    }
+   
+    console.log(`Servidor iniciado y a la escucha en el puerto: ${CONFIG.PORT}`);
+});
           
 
 
@@ -27,9 +33,3 @@ mongoose.connect(CONFIG.DB,option,function(err, res) {
   });
 // hacemos que escuche por un purto la aplicacion
 
-App.listen(CONFIG.PORT,function(err){
-    if(err){
-       return console.log(err);
-    }
-    console.log(`Servidor iniciado y a la escucha en el puerto: ${CONFIG.PORT}`);
-});

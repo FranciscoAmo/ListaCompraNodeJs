@@ -32,7 +32,7 @@ const ProductSchema = new mongoose.Schema({
 });
 ProductSchema.plugin(uniquevalidator,{message:'El producto ya existe en la base de datos modifica el precio si es lo que deseas'});
 
-// convertimos el Schema en modelo parametros: 1 Nombre del modelo(Para referenciarlo),2 Esquema del modelo,3 collecion de la base de datos en la que consultamos
+
 
 const Product = mongoose.model('product',ProductSchema);
 module.exports = Product;
