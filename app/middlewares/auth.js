@@ -26,7 +26,7 @@ services.decodeToken(token).then((response)=>{
 
 })
     .catch(response => {
-        res.status(res.status(403).send({ message: 'tiempo expirado vulevete a loggear '}))
+        res.status(res.status(403).send({ message: 'tiempo expirado vuelvete a loggear'}))
     })
 }
 

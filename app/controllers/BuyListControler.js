@@ -29,7 +29,7 @@ function createList(req,res){
     let list=new List(req.body);                                                       // obtengo los valores del cuerpo de la peticion
     if(!req.body.nameList ) return res.status(500).send({message:'debe introducir un nombre para la lista '})    // si no tiene el nombre o el tipo relenado no dejo guardar en la base de datos
     console.log({list})   
-    return list.save().then(list => res.status(201).send({message:"Creado",list}))   // lo guardo en la base de datos
+    return list.save().then(list => res.status(201).send({list}))   // lo guardo en la base de datos
     
     .catch(error => res.status(500).send(error));                      // si da fallo mando un mensage no discrimina err  tipo y duplicado de entrada 
  }
@@ -125,7 +125,7 @@ function findList(req,res,next){
 function findOneList(req,res,next){
     
     let listId=req.body._id        // datos del formulario
-    // console.log(listId);
+     console.log(' id de la peticion movil'+listId);
    // console.log(nombre+ 'ss')
     //console.log(req.user.sub+' hhh')
     List.find({_id:listId})    //busco si hay elementos que tenga el id del usuario logeado

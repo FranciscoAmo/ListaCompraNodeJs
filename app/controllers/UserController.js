@@ -22,8 +22,12 @@ function signUp(req, res){
     })
 
     if(email_validator.validate(req.body.email,{errorLevel:17})>0)
-    return  res.status(500).send({message: `El correo no tien un formato valido`}) // si hay un error muestra el mensage
+    return  res.status(500).send({message: `El correo no tiene un formato valido`}) // si hay un error muestra el mensage
       
+    if(req.body.displayName === undefined|| req.body.displayName === null|| req.body.displayName=="")
+        return res.status(500).send({message:'el campo nombre es necesario'})
+    
+
     // buscamos en la base de datos el email 
     User.findOne({email:req.body.email},(err,usero)=>{
     if(err) {return res.status(500).send({  err})} // error al consultar
@@ -33,9 +37,13 @@ function signUp(req, res){
 else{
     // salvamos el usuario
     user.save((err)=>{
-        if(err) return res.status(500).send({message: `Error al crear el usuario${err}`}) // si hay un error muestra el mensage
+        if(err) return res.status(500).send({message: `La contraseña es requerida`}) // si hay un error muestra el mensage
 
-        return res.status(200).send({ token: service.createToken(user)}) // servicio que crea un token metodo creado por mi
+        return res.status(200).send({   
+            user: user.displayName,
+            useremail: user.email,
+            
+            message :'Te has registrado correntamente',token: service.createToken(user)}) // servicio que crea un token metodo creado por mi
     })
      }
 });
@@ -80,6 +88,7 @@ function singIn(req, res){
                         //    console.log(password)
                             return res.status(200).send({
                                 user: user.displayName,
+                                useremail: user.email,
                                 message :'Te has logueado correntamente',
                                 token: service.createToken(user)    // envio el token creado 
                              
