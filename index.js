@@ -33,3 +33,4 @@ mongoose.connect(CONFIG.DB,option,function(err, res) {
   });
 // hacemos que escuche por un purto la aplicacion
 
+
